@@ -1,34 +1,33 @@
-const mongoose = require('mongoose');
+const { DataTypes, Sequelize } = require('sequelize');
+const sequelize = require('../config/database'); 
 
-const VeiculoSchema = new mongoose.Schema({
+const Veiculo = sequelize.define('Veiculo', {
     id_veiculo: {
-        type: Number,
-        unique: true,
-        required: true,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
     },
     placa: {
-        type: String,
-        required: true,
+        type: DataTypes.STRING(10),
+        allowNull: false,
         unique: true,
-        maxlength: 10,
     },
     capacidade: {
-        type: Number,
-        required: true,
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
     tipo: {
-        type: String,
-        enum: ['van', 'carro', 'ônibus'],
-        required: true,
+        type: DataTypes.ENUM('van', 'carro', 'ônibus'),
+        allowNull: false,
     },
     status: {
-        type: String,
-        enum: ['ativo', 'inativo'],
-        default: 'ativo',
-        required: true,
+        type: DataTypes.ENUM('ativo', 'inativo'),
+        allowNull: false,
+        defaultValue: 'ativo',
     },
 }, {
     timestamps: true,
+    tableName: 'veiculo',
 });
 
-module.exports = mongoose.model('Veiculo', VeiculoSchema);
+module.exports = Veiculo;

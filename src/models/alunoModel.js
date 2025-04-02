@@ -12,15 +12,15 @@ const Aluno = sequelize.define("Aluno", {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: "pessoa",
+            model: Pessoa, 
             key: "id_pessoa",
         },
     },
     id_responsavel: {
         type: DataTypes.INTEGER,
-        allowNull: true, // Pode ser nulo, caso o aluno não tenha responsável cadastrado
+        allowNull: true,
         references: {
-            model: "pessoa", // Responsável também é uma pessoa
+            model: Pessoa, 
             key: "id_pessoa",
         },
     },
@@ -38,9 +38,9 @@ const Aluno = sequelize.define("Aluno", {
 });
 
 // Associação: Aluno pertence a uma Pessoa (Dados do aluno)
-Aluno.belongsTo(Pessoa, { as: "dadosAluno", foreignKey: "id_pessoa" });
+Aluno.belongsTo(Pessoa, { as: "pessoa", foreignKey: "id_pessoa" });
 
 // Associação: Aluno pertence a uma Pessoa (Responsável)
-Aluno.belongsTo(Pessoa, { as: "dadosResponsavel", foreignKey: "id_responsavel" });
+Aluno.belongsTo(Pessoa, { as: "responsavel", foreignKey: "id_responsavel" });
 
 module.exports = Aluno;

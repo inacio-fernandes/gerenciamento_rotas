@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); // Adjust the path to your database configuration
+const sequelize = require('../config/database'); 
 
 const Parada = sequelize.define('Parada', {
     id_parada: {
@@ -27,14 +27,14 @@ const Parada = sequelize.define('Parada', {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: 'escola', // Adjust to match your table name
+            model: 'escola', 
             key: 'id_escola',
         },
         onDelete: 'SET NULL',
     },
 }, {
     tableName: 'parada',
-    timestamps: false, // Set to true if you have createdAt/updatedAt columns
+    timestamps: false, 
 });
 
 module.exports = Parada;

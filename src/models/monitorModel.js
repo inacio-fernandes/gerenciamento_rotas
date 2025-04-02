@@ -12,7 +12,7 @@ const Monitor = sequelize.define("Monitor", {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: "pessoa",
+            model: Pessoa, 
             key: "id_pessoa",
         },
     }
@@ -21,8 +21,7 @@ const Monitor = sequelize.define("Monitor", {
     timestamps: false,
 });
 
-// Associação: Aluno pertence a uma Pessoa (Dados do aluno)
+// Associação: Monitor pertence a uma Pessoa (Dados do monitor)
 Monitor.belongsTo(Pessoa, { as: "dadosMonitor", foreignKey: "id_pessoa" });
-
 
 module.exports = Monitor;

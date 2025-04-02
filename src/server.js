@@ -12,7 +12,7 @@ app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });
 
-//rota para buscar todos os usuários
+
 app.use("/alunos", alunoRoutes);
 
 

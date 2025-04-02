@@ -8,18 +8,18 @@ const pessoa = {
     include: [
         {
             model: Pessoa,
-            as: "dadosAluno", // Inclui os dados do aluno
+            as: "aluno", 
             attributes: aluno_attributes
         },
         {
             model: Pessoa,
-            as: "dadosResponsavel", // Inclui os dados do responsável
+            as: "dadosResponsavel", 
             attributes: responsavel_attributes
         }
     ]
 }
 
-// Buscar todos os alunos com informações da pessoa associada e do responsável
+
 const listarAlunos = async (req, res) => {
     try {
         const alunos = await Aluno.findAll(pessoa);

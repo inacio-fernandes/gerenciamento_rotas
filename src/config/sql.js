@@ -8,11 +8,11 @@ dotenv.config();
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
     protocol: 'postgres',
-    logging: process.env.DB_LOGGING === 'true', // Ativa/desativa logs de SQL com base no .env
+    logging: process.env.DB_LOGGING === 'true', 
     dialectOptions: {
         ssl: {
             require: true,
-            rejectUnauthorized: false, // Necessário para conexões SSL em alguns ambientes
+            rejectUnauthorized: false, 
         },
     },
 });

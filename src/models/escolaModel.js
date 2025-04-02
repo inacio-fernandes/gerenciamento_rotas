@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); // Adjust the path to your database configuration
+const sequelize = require('../config/database'); 
 
-const Eescola = sequelize.define('Escola', {
+const Escola = sequelize.define('Escola', {
     id_escola: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -25,7 +25,7 @@ const Eescola = sequelize.define('Escola', {
     }
 }, {
     tableName: 'escola',
-    timestamps: false, // Set to true if you have createdAt/updatedAt columns
+    timestamps: false, 
 });
 
-module.exports = Parada;
+module.exports = Escola;
