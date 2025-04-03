@@ -8,37 +8,32 @@ package-lock.json
 yarn.lock
 .pnpm-debug.log
 
-
 logs/
 *.log
 *.gz
 *.tgz
 
-
 .DS_Store
 Thumbs.db
-
 
 .env
 .env.local
 .env.*.local
 
-
 dist/
 build/
 
-
 .idea/
-.vscode/
+.vscode/*
+!.vscode/settings.json
 *.swp
 *.swo
 
-
 .npm/
-
 
 coverage/
 
-
 tmp/
 temp/
+
+.DS_Store
