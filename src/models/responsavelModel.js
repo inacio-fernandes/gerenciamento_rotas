@@ -1,31 +1,31 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/database");
-const Pessoa = require("./pessoaModel");
-
-const Responsavel = sequelize.define("Responsavel", {
-    id_responsavel: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-    },
-    id_pessoa: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Pessoa, 
-            key: "id_pessoa",
+module.exports = (sequelize, DataTypes) => {
+    const Responsavel = sequelize.define('Responsavel', {
+        id_responsavel: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
         },
-        onDelete: "CASCADE",
-    },
-}, {
-    tableName: "responsavel",
-    timestamps: false,
-});
+        id_pessoa: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Pessoa', // Referência ao modelo Pessoa
+                key: 'id_pessoa',
+            },
+        },
+    }, {
+        tableName: 'responsavel',
+        schema: 'rotas',
+        timestamps: false,
+    });
 
-Responsavel.belongsTo(Pessoa, { foreignKey: "id_pessoa", as: "pessoa" });
+    // Definindo as associações manualmente
+    Responsavel.associate = (models) => {
+        Responsavel.belongsTo(models.Pessoa, { foreignKey: 'id_pessoa', as: 'pessoa' });
+        Responsavel.hasMany(models.Aluno, { foreignKey: 'id_responsavel', as: 'alunos' });
 
-Pessoa.hasOne(Responsavel, { foreignKey: "id_pessoa", as: "responsavel" }); 
+        // Se houver outras associações, adicione-as aqui
+    };
 
-
-module.exports = Responsavel;
+    return Responsavel;
+};

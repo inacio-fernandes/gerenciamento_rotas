@@ -1,32 +1,33 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/sql");
-const Pessoa = require("./pessoaModel");
-
-const Motorista = sequelize.define("Motorista", {
-    id_motorista: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    id_pessoa: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: "pessoa",
-            key: "id_pessoa",
+module.exports = (sequelize, DataTypes) => {
+    const Motorista = sequelize.define("Motorista", {
+        id_motorista: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
         },
-    },
-    cnh: {
-        type: DataTypes.STRING(20),
-        allowNull: false
-    }
-}, {
-    tableName: "motorista",
-    timestamps: false,
-});
+        id_pessoa: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Pessoa',  // Refere-se à tabela Pessoa
+                key: 'id_pessoa',
+            },
+        },
+        cnh: {
+            type: DataTypes.STRING(20),
+            allowNull: false,
+        },
+    }, {
+        tableName: "motorista",
+        schema: 'rotas', // Assuming you have a schema named 'rotas'
+        timestamps: false,
+    });
 
-// Associação: Aluno pertence a uma Pessoa (Dados do aluno)
-Motorista.belongsTo(Pessoa, { as: "dadosMotorista", foreignKey: "id_pessoa" });
+    // Associações
+    Motorista.associate = (models) => {
+        Motorista.belongsTo(models.Pessoa, { foreignKey: 'id_pessoa' });
+        Motorista.hasMany(models.Rota, { foreignKey: 'id_motorista' });
+    };
 
-
-module.exports = Motorista;
+    return Motorista;
+};
