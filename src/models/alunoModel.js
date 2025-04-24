@@ -1,46 +1,66 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/sql");
-const Pessoa = require("./pessoaModel");
-
-const Aluno = sequelize.define("Aluno", {
-    id_aluno: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    id_pessoa: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: Pessoa, 
-            key: "id_pessoa",
+module.exports = (sequelize, DataTypes) => {
+    const Aluno = sequelize.define('Aluno', {
+        id_aluno: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
         },
-    },
-    id_responsavel: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: Pessoa, 
-            key: "id_pessoa",
+        id_pessoa: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
         },
-    },
-    url_documento: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    status: {
-        type: DataTypes.ENUM("ativo", "inativo"),
-        defaultValue: "ativo",
-    },
-}, {
-    tableName: "aluno",
-    timestamps: false,
-});
+        id_responsavel: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+        url_documento: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        observacao: {
+            type: DataTypes.TEXT,
+            allowNull: true,
+        },
+        status: {
+            type: DataTypes.ENUM("ATIVO", "INATIVO"),
+            defaultValue: "ATIVO",
+        },
+    }, {
+        tableName: 'aluno',
+        schema: 'rotas',
+        timestamps: false,
+    });
 
-// Associação: Aluno pertence a uma Pessoa (Dados do aluno)
-Aluno.belongsTo(Pessoa, { as: "pessoa", foreignKey: "id_pessoa" });
+    Aluno.associate = (models) => {
+        Aluno.belongsTo(models.Pessoa, {
+            foreignKey: 'id_pessoa',
+            as: 'pessoa'
+        });
 
-// Associação: Aluno pertence a uma Pessoa (Responsável)
-Aluno.belongsTo(Pessoa, { as: "responsavel", foreignKey: "id_responsavel" });
+        Aluno.belongsTo(models.Responsavel, {
+            foreignKey: 'id_responsavel',
+            as: 'responsavel'
+        });
 
-module.exports = Aluno;
+        Aluno.belongsToMany(models.Escola, {
+            through: models.AlunoEscola,
+            foreignKey: 'id_aluno',
+            otherKey: 'id_escola',
+            as: 'escolas'
+        });
+
+        Aluno.belongsToMany(models.Rota, {
+            through: models.AlunoRota,
+            foreignKey: 'id_aluno',
+            otherKey: 'id_rota',
+            as: 'rotas'
+        });
+
+        Aluno.hasMany(models.Ocorrencia, {
+            foreignKey: 'id_aluno',
+            as: 'ocorrencias'
+        });
+    };
+
+    return Aluno;
+};
