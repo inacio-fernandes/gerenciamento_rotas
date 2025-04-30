@@ -50,7 +50,6 @@ exports.signup = async (req, res) => {
     const { usuario, senha } = req.body;
     let { tipo } = req.body;
 
-    // Garante que o tipo esteja em maiúsculo
     tipo = tipo ? tipo.toUpperCase() : '';
 
     try {
@@ -61,8 +60,6 @@ exports.signup = async (req, res) => {
 
         let id_referencia = null;
 
-        // Buscar o id_referencia conforme o tipo (agora usando tipo em maiúsculo)
-        // Para ALUNO, RESPONSAVEL, MOTORISTA e MONITOR, buscar via Pessoa (cpf)
         if (['ALUNO', 'RESPONSAVEL', 'MOTORISTA', 'MONITOR'].includes(tipo)) {
             const pessoa = await require('../models').Pessoa.findOne({ where: { cpf: usuario } });
             if (pessoa) {
@@ -96,7 +93,6 @@ exports.signup = async (req, res) => {
             id_referencia
         });
 
-        // Gera o token JWT
         const token = jwt.sign(
             { id_usuario: newUser.id_usuario, usuario: newUser.usuario, tipo: newUser.tipo },
             JWT_SECRET,

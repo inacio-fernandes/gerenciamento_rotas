@@ -5,21 +5,20 @@ const dotenv = require('dotenv');
 // Configuração da conexão com o banco de dados
 dotenv.config();
 
-const databaseUrl = process.env.DATABASE_URL ;
+const databaseUrl = process.env.DATABASE_URL;
 
 const sequelize = new Sequelize(databaseUrl, {
     dialect: 'postgres',
     protocol: 'postgres',
-    logging: process.env.DB_LOGGING === 'true', 
+    logging: process.env.DB_LOGGING === 'true',
     dialectOptions: {
         ssl: process.env.DATABASE_SSL === 'true' ? {
             require: true,
-            rejectUnauthorized: false, 
+            rejectUnauthorized: false,
         } : false,
     },
 });
 
-// Testando a conexão
 (async () => {
     try {
         await sequelize.authenticate();

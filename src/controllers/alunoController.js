@@ -11,21 +11,35 @@ const listarAlunos = async (req, res) => {
             include: [
                 {
                     model: Pessoa,
-                    as: "pessoa"
+                    as: 'pessoa'
                 },
                 {
                     model: Responsavel,
-                    as: "responsavel",
-                    include: [
-                        {
-                            model: Pessoa,
-                            as: "pessoa" // <-- usa o alias certo
-                        }
-                    ]
+                    as: 'responsavel',
+                    include: {
+                        model: Pessoa,
+                        as: 'pessoa'
+                    }
                 }
-            ],
+            ]
         });
-        res.json(alunos);
+
+        const result = alunos.map(aluno => {
+            return {
+                id_aluno: aluno.id_aluno,
+                id_pessoa: aluno.pessoa?.id_pessoa,
+                nome_aluno: aluno.pessoa?.nome,
+                telefone_aluno: aluno.pessoa?.telefone,
+                nome_responsavel: aluno.responsavel ? aluno.responsavel.pessoa?.nome : null,
+                telefone_responsavel: aluno.responsavel ? aluno.responsavel.pessoa?.telefone : null
+            };
+        });
+
+        res.json({
+            success: true,
+            message: 'Alunos listados com sucesso',
+            data: result
+        });
     } catch (error) {
         console.error("Erro ao listar alunos:", error);
         res.status(500).json({ error: "Erro ao listar alunos", detalhes: error.message });
